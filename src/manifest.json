@@ -1,0 +1,31 @@
+{
+  "background": {
+    "scripts": [
+      "background/background.ts"
+    ]
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "https://*.visualstudio.com/*",
+    "identity",
+    "https://graph.microsoft.com/*"
+  ],
+  "content_scripts": [
+    {
+      "js": [
+        "content/index.ts"
+      ],
+      "matches": [
+        "https://*/*",
+        "http://*/*",
+        "https://*.visualstudio.com/*"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_title": "AzureDevOps ToDo Extension",
+    "default_popup": "pages/popup/index.html"
+  },
+  "name": "AzDvOpsTodoExtension"
+}
