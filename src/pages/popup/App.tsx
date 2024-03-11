@@ -1,6 +1,16 @@
 import React from 'react'
 import { PublicClientApplication } from '@azure/msal-browser';
 import { ChromeLogin, ChromeLogout, MsalConfig } from '../../content/login';
+import { PrimaryButton, Text, Stack } from '@fluentui/react';
+
+const tokens = {
+  sectionStack: {
+    childrenGap: 10,
+  },
+  headingStack: {
+    childrenGap: 5,
+  },
+};
 
 const App = (): JSX.Element => {
   const [token, setToken] = React.useState<string | null>(null);
@@ -50,19 +60,21 @@ const App = (): JSX.Element => {
   };
 
   return (
-    <div>
-      <h1>Extension Setting</h1>
-      <p>If you are seeing this, React is working!</p>
-      {token ? (
-        <div>
-          <p>You have login successfully.</p>
-          <p>Token: {token}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <button onClick={handleLogin}>Login</button>
-      )}
-    </div>
+    <Stack tokens={tokens.sectionStack} style={{width: 500}}>
+      <Text variant='large' block >Extension Setting</Text>
+      <Text variant='small' block >If you are seeing this, React is working!</Text>
+        {token ? (
+          <Stack tokens={tokens.headingStack}>
+            <Text variant='small' block >You have login successfully.</Text>
+            <Text variant='xSmall' nowrap={false} block >Token: {token}</Text>
+            <PrimaryButton onClick={handleLogout}>Logout</PrimaryButton>
+          </Stack>
+        ) : (
+          <Stack tokens={tokens.headingStack}>
+            <PrimaryButton onClick={handleLogin}>Login</PrimaryButton>
+          </Stack>
+        )}
+    </Stack>
   );
 }
 
