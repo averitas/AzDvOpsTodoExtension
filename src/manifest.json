@@ -27,5 +27,6 @@
     "default_title": "AzureDevOps ToDo Extension",
     "default_popup": "pages/popup/index.html"
   },
-  "name": "AzDvOpsTodoExtension"
+  "name": "AzDvOpsTodoExtension",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAouIBFVsn6TJ7QeK8Y5XeELgh40+6YUVihvgeznyDpA+hrXz3v6nALNhsL98CVJUBDj4U36NpmEArMOOfbXVA0/gkTSMjVQXUVIWF+KTVZ4+aOvjn8G40yANtHIsK8/FkeBqS+85Hq7itjC1WyxQGqe74bic2ok6MFAJ3L1zKTMWaBeXlNnoyR9tiMh3BZh7BTPtraRgM1jqLAzKAueWFgsacCvRvoieJCJws9XHl19z6PMeTHdJF+gNy+6cfEVwOzQJc81LDAySdQ1ZMf3v7nZXCYssAAD/H9g1uq0snz5S02EZ9LA2/cMHOahsxA8HH2MIFXYyefdrIMC0/xQ0ifQIDAQAB"
 }
