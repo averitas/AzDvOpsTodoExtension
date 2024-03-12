@@ -7,13 +7,12 @@ const createAddTodoButton = function() {
     const button = document.createElement('button');
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-haspopup', 'true');
-    button.setAttribute('aria-label', '');
-    button.setAttribute('aria-roledescription', 'button');
-    button.setAttribute('class', 'bolt-button bolt-icon-button enabled bolt-focus-treatment');
-    button.setAttribute('data-focuszone', 'focuszone-3');
+    button.setAttribute('aria-label', 'Add to ToDo List');
+    button.setAttribute('class', 'icon-only bolt-button bolt-icon-button enabled subtle icon-only bolt-focus-treatment');
+    button.setAttribute('data-focuszone', 'focuszone-55');
     button.setAttribute('data-is-focusable', 'true');
-    button.setAttribute('id', '__bolt-new-option_add_todo');
-    button.setAttribute('role', 'menuitem');
+    button.setAttribute('id', '__bolt-menu-button-51');
+    button.setAttribute('role', 'button');
     button.setAttribute('tabindex', '0');
     button.setAttribute('type', 'button');
     
@@ -24,17 +23,8 @@ const createAddTodoButton = function() {
     span2.setAttribute('aria-hidden', 'true');
     span2.setAttribute('class', 'left-icon flex-noshrink fabric-icon ms-Icon--Add medium');
     
-    const span3 = document.createElement('span');
-    span3.setAttribute('class', 'bolt-button-text body-m');
-    span3.textContent = 'Add Todo';
-    
-    const span4 = document.createElement('span');
-    span4.setAttribute('class', 'fluent-icons-enabled');
-    
-    button.appendChild(span1);
     span1.appendChild(span2);
-    button.appendChild(span3);
-    button.appendChild(span4);
+    button.appendChild(span1);
 
     return button;
 }
@@ -55,7 +45,6 @@ const addToDoButtonToList = function() {
             }
         });
         if (hasButton) {
-            console.log("Skip add todo button on key " + String(key));
             return;
         }
         const button = createAddTodoButton();
@@ -66,7 +55,7 @@ const addToDoButtonToList = function() {
 
 // Observe table changes
 // Options for the observer (which mutations to observe)
-const config = { attributes: true, childList: true, subtree: true };
+const config = { childList: true, subtree: true };
 
 // Callback function to execute when mutations are observed
 const addButtonCallback = (mutations: MutationRecord[], observer: MutationObserver): void => {
