@@ -62,7 +62,8 @@ const App = (): JSX.Element => {
   return (
     <Stack tokens={tokens.sectionStack} style={{width: 500}}>
       <Text variant='large' block >Extension Setting</Text>
-      <Text variant='small' block >If you are seeing this, React is working!</Text>
+      <Text variant='small' block >Don't login with Microsoft enterprise account! It will fail!</Text>
+      <Text variant='small' block >Login with you personal Outlook account, and don't record confidential content in it.</Text>
         {token ? (
           <Stack tokens={tokens.headingStack}>
             <Text variant='small' block >You have login successfully.</Text>
@@ -71,7 +72,7 @@ const App = (): JSX.Element => {
           </Stack>
         ) : (
           <Stack tokens={tokens.headingStack}>
-            <PrimaryButton onClick={handleLogin}>Login</PrimaryButton>
+            <PrimaryButton onClick={handleLogin}>Personal Outlook account Login</PrimaryButton>
           </Stack>
         )}
     </Stack>

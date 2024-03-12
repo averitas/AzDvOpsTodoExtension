@@ -17,7 +17,8 @@ export const ChromeLogin = function(callback: (token: string) => any) {
       'client_id=' + clientId +
       '&response_type=token' +
       '&redirect_uri=' + encodeURIComponent(redirectUri) +
-      '&scope=' + encodeURIComponent('Tasks.ReadWrite,User.Read');
+      '&scope=' + encodeURIComponent('Tasks.ReadWrite,User.Read') + 
+      '&prompt=select_account';
   
     chrome.identity.launchWebAuthFlow({url: authUrl, interactive: true}, function(responseUrl) {
       if (chrome.runtime.lastError) {

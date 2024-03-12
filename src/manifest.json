@@ -17,8 +17,6 @@
         "content/index.ts"
       ],
       "matches": [
-        "https://*/*",
-        "http://*/*",
         "https://*.visualstudio.com/*"
       ]
     }
