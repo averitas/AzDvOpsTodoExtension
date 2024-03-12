@@ -17,7 +17,7 @@
         "content/index.ts"
       ],
       "matches": [
-        "https://*.visualstudio.com/*"
+        "https://*.visualstudio.com/*/_queries/query/*"
       ]
     }
   ],
