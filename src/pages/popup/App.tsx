@@ -62,8 +62,8 @@ const App = (): JSX.Element => {
   return (
     <Stack tokens={tokens.sectionStack} style={{width: 500}}>
       <Text variant='large' block >Extension Setting</Text>
-      <Text variant='small' block >Don't login with Microsoft enterprise account! It will fail!</Text>
-      <Text variant='small' block >Login with you personal Outlook account, and don't record confidential content in it.</Text>
+      <Text variant='small' block >Don&apos;t login with Microsoft enterprise account! It will fail!</Text>
+      <Text variant='small' block >Login with you personal Outlook account, and don&apos;t record confidential content in it.</Text>
         {token ? (
           <Stack tokens={tokens.headingStack}>
             <Text variant='small' block >You have login successfully.</Text>
