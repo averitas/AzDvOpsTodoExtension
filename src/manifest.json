@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "js": [
-        "content/index.ts"
+        "content/index.tsx"
       ],
       "matches": [
         "https://*.visualstudio.com/*"

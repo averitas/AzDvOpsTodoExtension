@@ -1,9 +1,14 @@
+import { createRoot } from "react-dom/client";
+import AddTaskPopup from "../pages/popup/AddTodo/AddTaskPopup";
+import React from "react";
 console.log('content.index.ts script')
 const bodyElement = document.querySelector('body.lwp');
+const newDiv = document.createElement('div');
+bodyElement?.appendChild(newDiv);
 
 const defaultButton = document.createElement('button');
 
-const createAddTodoButton = function() {
+const createAddTodoButton = function(workItemTitle: string) {
     const button = document.createElement('button');
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-haspopup', 'true');
@@ -25,6 +30,15 @@ const createAddTodoButton = function() {
     
     span1.appendChild(span2);
     button.appendChild(span1);
+    button.onclick = () => {
+        console.log('Button clicked');
+        const root = createRoot(newDiv!);
+        chrome.storage.local.get(['token'], (result) => {
+            const token = result.token;
+            console.log("get token: " + token);
+            root.render(<AddTaskPopup isPopupVisible={true} accessToken={token} workItemTitle={workItemTitle}/>);
+        });
+    };
 
     return button;
 }
@@ -38,16 +52,25 @@ const addToDoButtonToList = function() {
     // Add button for each workitem
     workItemTitleElements.forEach((elm: Element, key: number) => {
         let hasButton = false
+        let workItemTitle = "";
         elm.childNodes[0].childNodes.forEach(element => {
             if (element.nodeName == 'BUTTON') {
                 hasButton = true;
                 return;
             }
+            if (element.nodeName == "DIV") {
+                element.childNodes.forEach(child => {
+                    if (child.nodeName == "A") {
+                        workItemTitle = child.textContent ?? "";
+                        console.log("title: " + workItemTitle);
+                    }
+                });
+            }
         });
         if (hasButton) {
             return;
         }
-        const button = createAddTodoButton();
+        const button = createAddTodoButton(workItemTitle);
         console.log("append todo button on key " + String(key));
         elm.childNodes[0].appendChild(button);
     })
@@ -81,5 +104,3 @@ const bodyObserver = new MutationObserver(addButtonCallback);
 
 // Start observing the target node for configured mutations
 bodyObserver.observe(bodyElement!, config);
-
-// TODO: Add popup page on button click event.
