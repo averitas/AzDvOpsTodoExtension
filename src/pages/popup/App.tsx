@@ -1,7 +1,7 @@
 import React from 'react'
-import { PublicClientApplication } from '@azure/msal-browser';
-import { ChromeLogin, ChromeLogout, MsalConfig } from '../../content/login';
-import { PrimaryButton, Text, Stack } from '@fluentui/react';
+// import { PublicClientApplication } from '@azure/msal-browser';
+import { ChromeLogin, ChromeLogout } from '../../content/login';
+import { PrimaryButton, Text, Stack, TextField, VerticalDivider } from '@fluentui/react';
 
 const tokens = {
   sectionStack: {
@@ -14,8 +14,9 @@ const tokens = {
 
 const App = (): JSX.Element => {
   const [token, setToken] = React.useState<string | null>(null);
-  const msalInstance = new PublicClientApplication(MsalConfig);
   const [summaryStr, setSummaryStr] = React.useState<string | null>(null);
+  const [apiKey, setApiKey] = React.useState<string | null>(null);
+  const [openaiEndpoint, setOpenaiEndpoint] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     // Retrieve token from chrome storage
@@ -36,7 +37,6 @@ const App = (): JSX.Element => {
   }
 
   const handleLogin = async () => {
-    await msalInstance.initialize();
     try {
       ChromeLogin(function(token: string) {
         saveTokenToStorage(token)
@@ -48,7 +48,6 @@ const App = (): JSX.Element => {
   };
 
   const handleLogout = async () => {
-    await msalInstance.initialize();
     try {
       ChromeLogout(token!);
       setToken(null);
@@ -81,11 +80,11 @@ const App = (): JSX.Element => {
       const workItemList = await getWorkItems();
       console.log("workItems : ", workItemList);
       const message_text = [{"role":"system","content":"You are an AI assistant that helps summary the work Item List."},{"role":"user","content": `${workItemList}`}]
-      const response = await fetch('https://validationframework-gpt4.openai.azure.com/openai/deployments/VF-GPT4/chat/completions?api-version=2024-02-15-preview', {
+      const response = await fetch(openaiEndpoint!, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': ''
+          'api-key': apiKey!
         },
         body: JSON.stringify({
           messages: message_text,
@@ -128,9 +127,24 @@ const App = (): JSX.Element => {
             <PrimaryButton onClick={handleLogin}>Personal Outlook account Login</PrimaryButton>
           </Stack>
         )}
+      <VerticalDivider />
+      <Text variant='large' block >Summary This page:</Text>
+      <TextField
+        defaultValue=''
+        label="Openai API key" 
+        onChange={(event, newValue) => {
+          setApiKey(newValue!);
+        }}/>
+      <TextField
+        defaultValue=''
+        label="Openai API endpoint URL" 
+        onChange={(event, newValue) => {
+          setOpenaiEndpoint(newValue!);
+        }}/>
       <Stack tokens={tokens.headingStack}>
         <PrimaryButton onClick={handleSummary}>Summary</PrimaryButton>
       </Stack>
+      <VerticalDivider />
       {summaryStr && <Text variant='small' block >Summary: {summaryStr}</Text>}
     </Stack>
   );
