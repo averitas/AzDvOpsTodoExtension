@@ -3,6 +3,30 @@ const bodyElement = document.querySelector('body.lwp');
 
 const defaultButton = document.createElement('button');
 
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(sender.tab ?
+                    "from a content script:" + sender.tab.url :
+                    "from the extension");
+        if (request.greeting === "hello")
+        sendResponse({farewell: "goodbye", data: getWorkItemList()});
+    }
+);
+
+const getWorkItemList = function()
+{
+    const workItemTitleElements = document.querySelectorAll('td[aria-colindex="4"][class="bolt-tree-cell bolt-table-cell bolt-list-cell"][data-column-index="3"]');
+
+    const workItemList: (string | null | undefined)[] = [];
+    // Add button for each workitem
+    workItemTitleElements.forEach((elm: Element, key: number) => {
+        const elementtext = elm.querySelector('.bolt-table-cell-content a')?.textContent
+        workItemList.push(elementtext);
+        console.log("Workitem title is: " + elementtext);
+    })
+    return workItemList;
+}
+
 const createAddTodoButton = function() {
     const button = document.createElement('button');
     button.setAttribute('aria-expanded', 'false');
