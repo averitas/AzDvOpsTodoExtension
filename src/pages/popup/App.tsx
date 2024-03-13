@@ -23,7 +23,35 @@ const App = (): JSX.Element => {
     chrome.storage.local.get(['token'], (result) => {
       setToken(result.token);
     });
+    chrome.storage.local.get(['apiKey'], (result) => {
+      setApiKey(result.apiKey);
+    });
+    chrome.storage.local.get(['openaiEndpoint'], (result) => {
+      setOpenaiEndpoint(result.openaiEndpoint);
+    });
   }, []);
+
+  const saveAndPersistApiKey = function(key: string | null | undefined) {
+    setApiKey(String(key));
+    chrome.storage.local.set({apiKey: String(key)}, function() {
+      if (chrome.runtime.lastError) {
+          console.log(chrome.runtime.lastError.message);
+      } else {
+          console.log('Api key saved in chrome.storage');
+      }
+    });
+  }
+
+  const saveAndPersistApiEndpoint = function(endpoint: string | null | undefined) {
+    setOpenaiEndpoint(String(endpoint));
+    chrome.storage.local.set({openaiEndpoint: String(endpoint)}, function() {
+      if (chrome.runtime.lastError) {
+          console.log(chrome.runtime.lastError.message);
+      } else {
+          console.log('Api endpoint saved in chrome.storage');
+      }
+    });
+  }
 
   const saveTokenToStorage = function(token: string | null) {
     chrome.storage.local.set({token: token}, function() {
@@ -49,7 +77,7 @@ const App = (): JSX.Element => {
 
   const handleLogout = async () => {
     try {
-      ChromeLogout(token!);
+      ChromeLogout(String(token));
       setToken(null);
 
       // Store token
@@ -76,15 +104,18 @@ const App = (): JSX.Element => {
   }
 
   const handleSummary = async () => {
+    // Save api key and endpoint
+    saveAndPersistApiEndpoint(openaiEndpoint);
+    saveAndPersistApiKey(apiKey);
     try {
       const workItemList = await getWorkItems();
       console.log("workItems : ", workItemList);
       const message_text = [{"role":"system","content":"You are an AI assistant that helps summary the work Item List."},{"role":"user","content": `${workItemList}`}]
-      const response = await fetch(openaiEndpoint!, {
+      const response = await fetch(String(openaiEndpoint), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': apiKey!
+          'api-key': String(apiKey),
         },
         body: JSON.stringify({
           messages: message_text,
@@ -133,13 +164,13 @@ const App = (): JSX.Element => {
         value={String(apiKey)}
         label="Openai API key" 
         onChange={(event, newValue) => {
-          setApiKey(newValue!);
+          setApiKey(String(newValue));
         }}/>
       <TextField
         value={String(openaiEndpoint)}
         label="Openai API endpoint URL" 
         onChange={(event, newValue) => {
-          setOpenaiEndpoint(newValue!);
+          setOpenaiEndpoint(String(newValue));
         }}/>
       <Stack tokens={tokens.headingStack}>
         <PrimaryButton onClick={handleSummary}>Summary</PrimaryButton>
