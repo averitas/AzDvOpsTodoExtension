@@ -130,13 +130,13 @@ const App = (): JSX.Element => {
       <VerticalDivider />
       <Text variant='large' block >Summary This page:</Text>
       <TextField
-        defaultValue=''
+        value={String(apiKey)}
         label="Openai API key" 
         onChange={(event, newValue) => {
           setApiKey(newValue!);
         }}/>
       <TextField
-        defaultValue=''
+        value={String(openaiEndpoint)}
         label="Openai API endpoint URL" 
         onChange={(event, newValue) => {
           setOpenaiEndpoint(newValue!);
