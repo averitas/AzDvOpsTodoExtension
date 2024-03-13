@@ -8,7 +8,31 @@ bodyElement?.appendChild(newDiv);
 
 const defaultButton = document.createElement('button');
 
-const createAddTodoButton = function(workItemTitle: string) {
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(sender.tab ?
+                    "from a content script:" + sender.tab.url :
+                    "from the extension");
+        if (request.greeting === "hello")
+        sendResponse({farewell: "goodbye", data: getWorkItemList()});
+    }
+);
+
+const getWorkItemList = function()
+{
+    const workItemTitleElements = document.querySelectorAll('td[aria-colindex="4"][class="bolt-tree-cell bolt-table-cell bolt-list-cell"][data-column-index="3"]');
+
+    const workItemList: (string | null | undefined)[] = [];
+    // Add button for each workitem
+    workItemTitleElements.forEach((elm: Element, key: number) => {
+        const elementtext = elm.querySelector('.bolt-table-cell-content a')?.textContent
+        workItemList.push(elementtext);
+        console.log("Workitem title is: " + elementtext);
+    })
+    return workItemList;
+}
+
+const createAddTodoButton = function() {
     const button = document.createElement('button');
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-haspopup', 'true');
@@ -44,13 +68,7 @@ const createAddTodoButton = function(workItemTitle: string) {
 }
 
 const addToDoButtonToList = function() {
-    const workItemTitleElements = document.querySelectorAll('td[aria-colindex="4"][class="bolt-tree-cell bolt-table-cell bolt-list-cell"][data-column-index="3"]');
-    console.log("Workitem count is: " + String(workItemTitleElements.length));
-    if (!workItemTitleElements) {
-        return;
-    }
-    // Add button for each workitem
-    workItemTitleElements.forEach((elm: Element, key: number) => {
+    const addButtonInner = function(elm: Element, key: number) {
         let hasButton = false
         let workItemTitle = "";
         elm.childNodes[0].childNodes.forEach(element => {
@@ -73,7 +91,13 @@ const addToDoButtonToList = function() {
         const button = createAddTodoButton(workItemTitle);
         console.log("append todo button on key " + String(key));
         elm.childNodes[0].appendChild(button);
-    })
+    }
+
+    const workItemTitleElements = document.querySelectorAll('td.bolt-tree-cell.bolt-table-cell.bolt-list-cell');
+    console.log("workItemTitleElements count is: " + String(workItemTitleElements.length));
+    if (workItemTitleElements) {
+        workItemTitleElements.forEach(addButtonInner);
+    }
 }
 
 // Observe table changes
@@ -99,6 +123,30 @@ const addButtonCallback = (mutations: MutationRecord[], observer: MutationObserv
     console.log("[Table]Add button callback finished.");
     updating = false
 };
+
+const addListenerToTbodyCallback = (mutations: MutationRecord[], observer: MutationObserver) => {
+    let updating = false
+    for (const mutation of mutations) {
+        if (updating) {
+            console.log("[addListenerToTbodyCallback]A child node is updating, skip.");
+            return;
+        }
+      if (mutation.type === "childList") {
+        console.log("[addListenerToTbodyCallback]Try to add listener to tbody.");
+        updating = true
+        const tbodyElement = document.querySelector('tbody.relative');
+        if (tbodyElement) {
+            const tableObs = new MutationObserver(addButtonCallback);
+            tableObs.observe(tbodyElement, {childList: true, subtree: false});
+            observer.disconnect();
+        }
+      } else if (mutation.type === "attributes") {
+        console.log(`[addListenerToTbodyCallback]The ${mutation.attributeName} attribute was modified.`);
+      }
+    }
+    updating = false;
+}
+
 // Create an observer instance linked to the callback function
 const bodyObserver = new MutationObserver(addButtonCallback);
 
