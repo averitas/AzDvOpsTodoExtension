@@ -1,4 +1,4 @@
-import { Dropdown, FocusTrapZone, IDropdownOption, Layer, Overlay, Popup, PrimaryButton, TextField, mergeStyleSets, Text } from '@fluentui/react';
+import { Dropdown, FocusTrapZone, IDropdownOption, Layer, Overlay, Popup, PrimaryButton, TextField, mergeStyleSets, Text, Stack } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { addTask, getAllTaskLists } from './TodoFunctions';
 import { TAddTaskPopupProps } from './addTaskPopup.types';
@@ -24,7 +24,7 @@ const AddTaskPopup = (props: TAddTaskPopupProps): JSX.Element => {
         content: {
           background: 'white',
           left: '50%',
-          maxWidth: '400px',
+          maxWidth: '600px',
           padding: '0 2em 2em',
           position: 'absolute',
           top: '50%',
@@ -88,10 +88,12 @@ const AddTaskPopup = (props: TAddTaskPopupProps): JSX.Element => {
                         <div role="document" className={popupStyles.content}>
                             <h2>Add To-do Task</h2>
                             <Dropdown label='Select Task List to Add' options={taskList} onChange={onDropdownChange}/>
-                            <TextField label='Enter Category' onChange={onChange}/>
-                            <TextField required label='Enter Title' onChange={onChangeTitle} defaultValue={props.workItemTitle}/>
-                            <PrimaryButton text='Add' onClick={onClick}/>
-                            <PrimaryButton text='Close' onClick={onClickCancel}/>
+                            <TextField styles={{ fieldGroup: { width: 300 } }} label='Enter Category' onChange={onChange}/>
+                            <TextField styles={{ fieldGroup: { width: 300 } }} required label='Enter Title' onChange={onChangeTitle} defaultValue={props.workItemTitle}/>
+                            <Stack tokens={{childrenGap: 5, padding: 10}}>
+                                <PrimaryButton text='Add' onClick={onClick}/>
+                                <PrimaryButton text='Close' onClick={onClickCancel}/>
+                            </Stack>
                             {finished && (addTaskSucceed ? <Text>Success!</Text> : <Text>Failed!</Text>)}
                         </div>
                     </FocusTrapZone>
