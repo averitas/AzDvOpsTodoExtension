@@ -9,7 +9,7 @@ bodyElement?.appendChild(newDiv);
 const defaultButton = document.createElement('button');
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    function(request, sender, sendResponse) {   
         console.log(sender.tab ?
                     "from a content script:" + sender.tab.url :
                     "from the extension");
@@ -32,7 +32,7 @@ const getWorkItemList = function()
     return workItemList;
 }
 
-const createAddTodoButton = function() {
+const createAddTodoButton = function(workItemTitle: string) {
     const button = document.createElement('button');
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-haspopup', 'true');
