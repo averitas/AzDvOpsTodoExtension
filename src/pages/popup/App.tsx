@@ -166,7 +166,10 @@ const App = (): JSX.Element => {
         label="Openai API key" 
         onChange={(event, newValue) => {
           setApiKey(String(newValue));
-        }}/>
+        }}
+        type="password"
+        canRevealPassword
+        revealPasswordAriaLabel="Show password"/>
       <TextField
         value={String(openaiEndpoint)}
         label="Openai API endpoint URL" 
