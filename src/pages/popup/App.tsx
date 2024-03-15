@@ -151,7 +151,6 @@ const App = (): JSX.Element => {
         {token ? (
           <Stack tokens={tokens.headingStack}>
             <Text variant='small' block >You have login successfully.</Text>
-            <Text variant='xSmall' nowrap={false} block >Token: {token}</Text>
             <PrimaryButton onClick={handleLogout}>Logout</PrimaryButton>
           </Stack>
         ) : (
