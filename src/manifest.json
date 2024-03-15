@@ -1,15 +1,16 @@
 {
   "background": {
-    "scripts": [
-      "background/background.ts"
-    ]
+    "service_worker": "background/background.ts",
+    "type": "module"
   },
   "permissions": [
     "activeTab",
     "storage",
-    "https://*.visualstudio.com/*",
-    "identity",
-    "https://graph.microsoft.com/*"
+    "identity"
+  ],
+  "host_permissions": [
+    "https://graph.microsoft.com/*",
+    "https://*.visualstudio.com/*"
   ],
   "content_scripts": [
     {
@@ -21,7 +22,8 @@
       ]
     }
   ],
-  "browser_action": {
+  "manifest_version": 3,
+  "action": {
     "default_title": "AzureDevOps ToDo Extension",
     "default_popup": "pages/popup/index.html"
   },

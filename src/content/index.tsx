@@ -6,8 +6,6 @@ const bodyElement = document.querySelector('body.lwp');
 const newDiv = document.createElement('div');
 bodyElement?.appendChild(newDiv);
 
-const defaultButton = document.createElement('button');
-
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {   
         console.log(sender.tab ?
@@ -123,29 +121,6 @@ const addButtonCallback = (mutations: MutationRecord[], observer: MutationObserv
     console.log("[Table]Add button callback finished.");
     updating = false
 };
-
-const addListenerToTbodyCallback = (mutations: MutationRecord[], observer: MutationObserver) => {
-    let updating = false
-    for (const mutation of mutations) {
-        if (updating) {
-            console.log("[addListenerToTbodyCallback]A child node is updating, skip.");
-            return;
-        }
-      if (mutation.type === "childList") {
-        console.log("[addListenerToTbodyCallback]Try to add listener to tbody.");
-        updating = true
-        const tbodyElement = document.querySelector('tbody.relative');
-        if (tbodyElement) {
-            const tableObs = new MutationObserver(addButtonCallback);
-            tableObs.observe(tbodyElement, {childList: true, subtree: false});
-            observer.disconnect();
-        }
-      } else if (mutation.type === "attributes") {
-        console.log(`[addListenerToTbodyCallback]The ${mutation.attributeName} attribute was modified.`);
-      }
-    }
-    updating = false;
-}
 
 // Create an observer instance linked to the callback function
 const bodyObserver = new MutationObserver(addButtonCallback);
