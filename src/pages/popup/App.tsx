@@ -90,9 +90,9 @@ const App = (): JSX.Element => {
   const getWorkItems = async () => {
     return new Promise((resolve, reject) => {
       console.log("getWorkItems");
-      chrome.tabs.getSelected(function(tab){ 
-        console.log("tab Id :", tab.id);
-        chrome.tabs.sendMessage(tab.id ?? 0, {greeting: "hello"}, function(response) {
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs){ 
+        console.log("tab Id :", tabs[0].id);
+        chrome.tabs.sendMessage(tabs[0].id ?? 0, {greeting: "hello"}, function(response) {
           const resp = JSON.stringify(response);
           console.log(resp);
           const workItems = JSON.parse(resp).data;
@@ -108,6 +108,7 @@ const App = (): JSX.Element => {
     saveAndPersistApiEndpoint(openaiEndpoint);
     saveAndPersistApiKey(apiKey);
     try {
+      setSummaryStr("Summarizing...");
       const workItemList = await getWorkItems();
       console.log("workItems : ", workItemList);
       const message_text = [{"role":"system","content":"You are an AI assistant that helps summary the work Item List."},{"role":"user","content": `${workItemList}`}]
