@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(
 
 const getWorkItemList = function()
 {
-    const workItemTitleElements = document.querySelectorAll('td[aria-colindex="4"][class="bolt-tree-cell bolt-table-cell bolt-list-cell"][data-column-index="3"]');
+    const workItemTitleElements = document.querySelectorAll('td.bolt-tree-cell.bolt-table-cell.bolt-list-cell');
 
     const workItemList: (string | null | undefined)[] = [];
     // Add button for each workitem
