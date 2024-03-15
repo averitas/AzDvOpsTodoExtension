@@ -91,10 +91,10 @@ const AddTaskPopup = (props: TAddTaskPopupProps): JSX.Element => {
                             <TextField styles={{ fieldGroup: { width: 300 } }} label='Enter Category' onChange={onChange}/>
                             <TextField styles={{ fieldGroup: { width: 300 } }} required label='Enter Title' onChange={onChangeTitle} defaultValue={props.workItemTitle}/>
                             <Stack tokens={{childrenGap: 5, padding: 10}}>
-                                <PrimaryButton text='Add' onClick={onClick}/>
+                                <PrimaryButton text='Add' onClick={onClick} disabled={addTaskSucceed}/>
                                 <PrimaryButton text='Close' onClick={onClickCancel}/>
                             </Stack>
-                            {finished && (addTaskSucceed ? <Text>Success!</Text> : <Text>Failed!</Text>)}
+                            {finished && (addTaskSucceed ? <Text variant='large'>Success!</Text> : <Text>Failed!</Text>)}
                         </div>
                     </FocusTrapZone>
                 </Popup>
