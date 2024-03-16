@@ -4,7 +4,7 @@
     "type": "module"
   },
   "permissions": [
-    "activeTab",
+    "tabs",
     "storage",
     "identity"
   ],
