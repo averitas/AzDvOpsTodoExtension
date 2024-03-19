@@ -31,7 +31,7 @@ npm install
 For development with automatic reloading:
 
 ```sh
-npm run start
+yarn start
 ```
 
 Open the [Extensions Dashboard](chrome://extensions), enable "Developer mode", click "Load unpacked", and choose the `dist` folder.
@@ -47,11 +47,16 @@ When it's time to publish your Chrome extension, make a production build to subm
 Run the following line:
 
 ```sh
-npm run build
+yarn build
 ```
 
 This will create a ZIP file with your package name and version in the `releases`
 folder.
+
+Release zip file:
+```sh
+yarn release
+```
 
 ## Source Layout
 
@@ -60,13 +65,10 @@ include here. All the filepaths in your manifest should point to files in `src`.
 
 ## Features
 
-- Uses Rollup to bundle your extension
-- Chrome Extension automatic reloader
-- Jest configuration for testing
+- A shortcut Add ToDo button on Azure Devops page.
+- Summarize Azure Devops workitems with Azure Openai endpoint.
 
-## Resources
+## Published page
 
-[Chrome Extension official documentation](https://developer.chrome.com/docs/webstore/)
-
-[How to Publish your extension step by step video tutorial](https://www.youtube.com/playlist?list=PLYlOQabA4Mm0bPiMKIBMgZK0u2jbYsrC6)
+[Chrome Web store page](https://chrome.google.com/webstore/detail/pleiecmmeaodngangbbhfjeiigmmfiia)
 
